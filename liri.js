@@ -33,14 +33,12 @@ function runLiriCommand() {
     
     switch (liriCommand) {
       case "my-tweets":
-      
           myTweets();
           break;
       case "movie-this":
             movieThis();
             break;
       case "spotify-this-song":
-           
            spotifyThisSong();
            break;
       case "do-what-it-says":
@@ -65,20 +63,25 @@ function spotifyThisSong () {
                 else {
                 // console.log(data);
                 // console.log(JSON.stringify(data,null,2)); 
-
-                    for (i=0;i<data.tracks.items.length;i++) {
-                        console.log("Artist: " + data.tracks.items[i].album.artists[0].name); 
-                        console.log("Song name: " + data.tracks.items[i].name);
-                        console.log("Preview link: " + data.tracks.items[i].preview_url);
-                        console.log("Album: " + data.tracks.items[i].album.name); 
-                        console.log("");
-                        fs.appendFile("log.txt","Artist: " + data.tracks.items[i].album.artists[0].name + "\r\n"); 
-                        fs.appendFile("log.txt","Song name: " + data.tracks.items[i].name + "\r\n");
-                        fs.appendFile("log.txt","Preview link: " + data.tracks.items[i].preview_url + "\r\n");
-                        fs.appendFile("log.txt","Album: " + data.tracks.items[i].album.name + "\r\n"); 
-                        fs.appendFile("log.txt","" + "\r\n");
-                        }
+                    if (data.tracks.items.length === 0) {
+                        console.log("No matching song or artist found.");
+                        fs.appendFile("log.txt","No matching song or artist found.");
                     }
+                    else {
+                        for (i=0;i<data.tracks.items.length;i++) {
+                            console.log("Artist: " + data.tracks.items[i].album.artists[0].name); 
+                            console.log("Song name: " + data.tracks.items[i].name);
+                            console.log("Preview link: " + data.tracks.items[i].preview_url);
+                            console.log("Album: " + data.tracks.items[i].album.name); 
+                            console.log("");
+                            fs.appendFile("log.txt","Artist: " + data.tracks.items[i].album.artists[0].name + "\r\n"); 
+                            fs.appendFile("log.txt","Song name: " + data.tracks.items[i].name + "\r\n");
+                            fs.appendFile("log.txt","Preview link: " + data.tracks.items[i].preview_url + "\r\n");
+                            fs.appendFile("log.txt","Album: " + data.tracks.items[i].album.name + "\r\n"); 
+                            fs.appendFile("log.txt","" + "\r\n");
+                            }
+                    }
+                }
             });
 }
 
@@ -175,10 +178,12 @@ function doWhatItSays() {
 
 function logLiriCommand() {
     if (randomCommand != "") {
+        fs.appendFile("log.txt","\r\n*************************************\r\n");
         fs.appendFile("log.txt","Liri Command: " + liriCommand + "\r\n");
         fs.appendFile("log.txt","Liri Random Command:" + randomCommand + " " + liriParams.replace('+',' ') + "\r\n");
     }
     else {
+        fs.appendFile("log.txt","\r\n*************************************\r\n");
          fs.appendFile("log.txt","Liri Command: " + liriCommand + " " + liriParams.replace('+',' ') + "\r\n");
     }
 
